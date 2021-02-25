@@ -117,7 +117,7 @@ print(
 </div>
 To interface with the IOOS catalog we will use the [Catalogue Service for the Web (CSW)](https://live.osgeo.org/en/standards/csw_overview.html) endpoint and [python's OWSLib library](https://geopython.github.io/OWSLib).
 
-The cell below creates the [Filter Enconding Specification (FES)](http://www.opengeospatial.org/standards/filter) with configuration we specified in cell [2]. The filter is composed of:
+The cell below creates the [Filter Encoding Specification (FES)](http://www.opengeospatial.org/standards/filter) with configuration we specified in cell [2]. The filter is composed of:
 - `or` to catch any of the standard names;
 - `not` some names we do not want to show up in the results;
 - `date range` and `bounding box` for the time-space domain of the search.
@@ -272,7 +272,7 @@ for url in dap_urls:
 </div>
 Now we have a nice list of all the models available in the catalog for the domain we specified.
 We still need to find the observations for the same domain.
-To accomplish that we will use the `pyoos` libray and search the [SOS CO-OPS](https://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/) services using the virtually the same configuration options from the catalog search.
+To accomplish that we will use the `pyoos` library and search the [SOS CO-OPS](https://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/) services using the virtually the same configuration options from the catalog search.
 
 <div class="prompt input_prompt">
 In&nbsp;[7]:

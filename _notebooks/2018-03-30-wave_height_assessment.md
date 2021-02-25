@@ -827,7 +827,7 @@ In&nbsp;[22]:
 </div>
 
 ```python
-# Some known models names. Unknonwn models will use the title metadata or the URL.
+# Some known models names. Unknown models will use the title metadata or the URL.
 titles = {
     "coawst_4_use_best": "COAWST_4",
     "global": "HYCOM",

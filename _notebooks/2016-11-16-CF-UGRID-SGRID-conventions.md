@@ -13,7 +13,7 @@ and [`SGRID-0.3`](http://sgrid.github.io/sgrid/)
 
 ### CF-1.6 with iris
 
-There are many Python libraries to read and write CF metdata,
+There are many Python libraries to read and write CF metadata,
 but only [`iris`](http://scitools.org.uk/iris/) encapsulates CF in an object with an API.
 From iris own docs:
 
