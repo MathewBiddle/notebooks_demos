@@ -26,7 +26,7 @@ import pyworms
 import uuid
 ```
 
-Now we need to read in the raw data file using [pandas.read_csv()](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html). Here we display the first ten rows of data to give the user an idea of what observations are contained in the [raw file](https://github.com/master/notebooks_demos/blob/master/notebooks/data/dwc/raw/MadeUpDataForBiologicalDataTraining.csv).
+Now we need to read in the raw data file using [pandas.read_csv()](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html). Here we display the first ten rows of data to give the user an idea of what observations are contained in the [raw file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/raw/MadeUpDataForBiologicalDataTraining.csv).
 
 <div class="prompt input_prompt">
 In&nbsp;[2]:
@@ -245,7 +245,7 @@ In&nbsp;[8]:
 event.drop_duplicates(subset='eventID',inplace=True)
 ```
 
-Finally we write out the [event file](https://github.com/master/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_event.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
+Finally we write out the [event file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_event.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
 
 <div class="prompt input_prompt">
 In&nbsp;[9]:
@@ -586,7 +586,7 @@ occurrence.drop(
     inplace=True)
 ```
 
-Finally, we write out the [occurrence file](https://github.com/master/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_Occurrence.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
+Finally, we write out the [occurrence file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_Occurrence.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
 
 <div class="prompt input_prompt">
 In&nbsp;[15]:
@@ -888,7 +888,7 @@ percent_cover.drop(columns=['percent cover', 'date'],inplace=True)
 measurementorfact = pd.concat([temperature, rugosity, percent_cover])
 ```
 
-Finally, we write the [measurement or fact file](https://github.com/master/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_mof.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
+Finally, we write the [measurement or fact file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_mof.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
 
 <div class="prompt input_prompt">
 In&nbsp;[17]:
@@ -1075,14 +1075,6 @@ measurementorfact.sample(n=10)
 **Author:** Mathew Biddle
 
 This notebook is a Python implementation of the R notebook created by Abby Benson [IOOS_DMAC_DataToDWC_Notebook_event.R](https://github.com/ioos/bio_data_guide/blob/master/Standardizing%20Marine%20Biological%20Data/datasets/example_script_with_fake_data/IOOS_DMAC_DataToDwC_Notebook_event.R).
-
-<div class="prompt input_prompt">
-In&nbsp;[None]:
-</div>
-
-```python
-
-```
 <br>
 Right click and choose Save link as... to
 [download](https://raw.githubusercontent.com/ioos/notebooks_demos/master/notebooks/2020-12-08-DataToDwC.ipynb)
