@@ -1,17 +1,18 @@
 ---
-title: "Aligning Data to Darwin Core - Sampling Event with Measurement or Fact using Python"
+title: "Aligning Data to Darwin Core"
 layout: notebook
 
 ---
+## Creating event core with an occurrence and extended measurement or fact extension using Python
 
-This notebook was created for the [IOOS DMAC Code Sprint](https://www.glos.us/code-sprint/) Biological Data Session
+*Caution:* This notebook was created for the [IOOS DMAC Code Sprint](https://www.glos.us/code-sprint/) Biological Data Session.
 The data in this notebook were created specifically as an example and meant solely to be
 illustrative of the process for aligning data to the biological data standard - [Darwin Core](https://dwc.tdwg.org/).
-These data should not be considered actually occurrences of species and any measurements
+These data should not be considered actual occurrences of species and any measurements
 are also contrived. This notebook is meant to provide a step by step process for taking
-original data and aligning it to Darwin Core
+original data and aligning it to Darwin Core. It has been adapted from the R markdown notebook created by Abby Benson [IOOS_DMAC_DataToDWC_Notebook_event.md](https://github.com/ioos/bio_data_guide/blob/master/Standardizing%20Marine%20Biological%20Data/datasets/example_script_with_fake_data/IOOS_DMAC_DataToDwC_Notebook_event.md).
 
-First let's bring in the appropriate libraries to work with the tabular data files and generate the appropriate content for the DarwinCore requirements.
+First let's bring in the appropriate libraries to work with the tabular data files and generate the appropriate content for the Darwin Core requirements.
 
 <div class="prompt input_prompt">
 In&nbsp;[1]:
@@ -155,18 +156,20 @@ df.head()
 
 
 
-First we need to to decide if we will provide an **occurrence only** version of the data or a **sampling event with measurement or facts** version of the data. 
+First we need to to decide if we will build an **occurrence only** version of the data or an **event core** with an **occurrence** and **extended measurement or facts extension (eMoF)** version of the data. 
 
-* **Occurrence only**: 
-  * Easier to create. 
-  * It's only one file to produce. 
-  * However, several pieces of information will be left out if we choose that option. 
-* **sampling event with measurement or fact (mof)**: 
-  * More difficult to create.
-  * composed of several files.
-  * Can capture all of the data in the file creating a lossless version.
+* [**Occurrence only**](https://dwc.tdwg.org/terms/#occurrence): 
+   * Easier to create. 
+   * It's only one file to produce. 
+   * However, several pieces of information will be left out if we choose that option. 
 
-Here we decide to use the **sampling event with measurement or fact (mof)** option to include as much information as we can.
+
+* **[sampling event](https://dwc.tdwg.org/terms/#event) with [occurrence](https://dwc.tdwg.org/terms/#occurrence) and [extended measurement or fact (eMoF)](https://tools.gbif.org/dwca-validator/extension.do?id=http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact)**: 
+   * More difficult to create.
+   * composed of several files.
+   * Can capture all of the data in the file creating a lossless version.
+
+Here we decide to use the second option, **extended measurement or fact (eMoF)**, to include as much information as we can.
 
 First let's create the `eventID` and `occurrenceID` in the original file so that information can be reused for all necessary files down the line.
 
@@ -185,7 +188,9 @@ to the event file.
 
 # Event file
 
-Let's first make a copy of the DataFrame we pulled in. Only using the data fields of interest for the **event file**.
+More information on the **event** category in Darwin Core can be found at [https://dwc.tdwg.org/terms/#event](https://dwc.tdwg.org/terms/#event).
+
+Let's first make a copy of the DataFrame we pulled in. Only using the data fields of interest for the **event file**).
 
 <div class="prompt input_prompt">
 In&nbsp;[4]:
@@ -210,7 +215,7 @@ event['habitat'] = event['bottom type']
 event['island'] = event['region']
 ```
 
-We need to convert the date to [ISO format](https://en.wikipedia.org/wiki/ISO_8601) and add any missing, required, fields.
+We need to appropriately read in the date field, so we can export it to [ISO format](https://en.wikipedia.org/wiki/ISO_8601). Also add any missing, required, fields.
 
 <div class="prompt input_prompt">
 In&nbsp;[6]:
@@ -245,7 +250,7 @@ In&nbsp;[8]:
 event.drop_duplicates(subset='eventID',inplace=True)
 ```
 
-Finally we write out the [event file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_event.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
+Finally, we write out the [event file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_event.csv), specifying the ISO date format. We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
 
 <div class="prompt input_prompt">
 In&nbsp;[9]:
@@ -367,6 +372,8 @@ event.sample(n=5).sort_index()
 
 
 # Occurrence file
+More information on the **occurrence** category in Darwin Core can be found at [https://dwc.tdwg.org/terms/#occurrence](https://dwc.tdwg.org/terms/#occurrence).
+
 For creating the **occurrence** file, we start by creating the DataFrame and renaming the fields that align directly with Darwin Core. Then, we'll add the required information that is missing.
 
 <div class="prompt input_prompt">
@@ -836,14 +843,16 @@ occurrence.sample(n=10).sort_index()
 
 
 
-# Measurement Or Fact
-The last file we need to create is the **measurement or fact (mof)** file. The measurement or fact includes measurements/facts about the event (temp, salinity, etc) as well as about the occurrence (percent cover, abundance, weight, length, etc). They are linked to the events using `eventID` and to the occurrences using `occurrenceID`. [Measurements or facts](http://rs.gbif.org/extension/dwc/measurements_or_facts.xml) are any other generic observations that are associated with resources that are described using Darwin Core (eg. water temperature observations). See https://dwc.tdwg.org/rdf/#2-implementation-guide for more information.
+# Extended Measurement Or Fact (eMoF)
+The last file we need to create is the **extended measurement or fact (eMoF)** file. The measurement or fact includes measurements/facts about the event (temp, salinity, etc) as well as about the occurrence (percent cover, abundance, weight, length, etc). They are linked to the events using `eventID` and to the occurrences using `occurrenceID`. [Extended Measurements Or Facts](https://tools.gbif.org/dwca-validator/extension.do?id=http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact) are any other generic observations that are associated with resources that are described using Darwin Core (eg. water temperature observations). See the [DwC implementation guide](https://dwc.tdwg.org/rdf/#2-implementation-guide) for more information.
 
-For the various `TypeID` fields (eg. `measurementTypeID`) include URI's from the [BODC NERC vocabulary](https://www.bodc.ac.uk/resources/vocabularies/vocabulary_search/) or other nearly permanent source, where possible. For example, [*water temperature*](http://vocab.nerc.ac.uk/collection/P25/current/WTEMP/) in the BODC NER vocabulary, the URI is `http://vocab.nerc.ac.uk/collection/P25/current/WTEMP/`.
+For the various `TypeID` fields (eg. `measurementTypeID`) include URI's from the [BODC NERC vocabulary](https://www.bodc.ac.uk/resources/vocabularies/vocabulary_search/) or other *nearly permanent* source, where possible. For example, [water temperature](http://vocab.nerc.ac.uk/collection/P25/current/WTEMP/) in the BODC NERC vocabulary, the URI is `http://vocab.nerc.ac.uk/collection/P25/current/WTEMP/`.
 
-We then populate the appropriate fields with the information we have available. The `measurementValue` field is populated with the observed values of the measurement described in the `measurementType` and `measurementUnit` field.
+We then populate the appropriate fields with the information we have available. The `measurementValue` field is populated with the observed values of the measurement described in the `measurementType` and `measurementUnit` field. 
 
-Below we walk through creating three independent DataFrames for *temperature*, *rugosity*, and *percent cover*. Populating each DataFrame with all of the information we have available and removing duplicative fields. We finally concatenate all the **measurements or facts** together into one DataFrame.
+For measurement or facts of the **occurrence** (eg. percent cover, length, density, biomass, etc), we want to be sure to include the `occurrenceID` from the **occurrence** record as those observations are measurements of/from the organism. Other observations are tied to the **event** via the `eventID` (eg. water temperature, rugosity, etc).
+
+Below we walk through creating three independent DataFrames for *temperature*, *rugosity*, and *percent cover*. Populating each DataFrame with all of the information we have available and removing duplicative fields. We finally concatenate all the **extended measurements or facts** together into one DataFrame.
 
 <div class="prompt input_prompt">
 In&nbsp;[16]:
@@ -888,7 +897,7 @@ percent_cover.drop(columns=['percent cover', 'date'],inplace=True)
 measurementorfact = pd.concat([temperature, rugosity, percent_cover])
 ```
 
-Finally, we write the [measurement or fact file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_mof.csv). We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
+Finally, we write the [measurement or fact file](https://github.com/ioos/notebooks_demos/blob/master/notebooks/data/dwc/processed/MadeUpData_mof.csv), again specifying the ISO date format. We've printed ten random rows of the DataFrame to give an example of what the resultant file will look like.
 
 <div class="prompt input_prompt">
 In&nbsp;[17]:
@@ -1073,8 +1082,6 @@ measurementorfact.sample(n=10)
 
 
 **Author:** Mathew Biddle
-
-This notebook is a Python implementation of the R notebook created by Abby Benson [IOOS_DMAC_DataToDWC_Notebook_event.R](https://github.com/ioos/bio_data_guide/blob/master/Standardizing%20Marine%20Biological%20Data/datasets/example_script_with_fake_data/IOOS_DMAC_DataToDwC_Notebook_event.R).
 <br>
 Right click and choose Save link as... to
 [download](https://raw.githubusercontent.com/ioos/notebooks_demos/master/notebooks/2020-12-08-DataToDwC.ipynb)
